@@ -1,5 +1,6 @@
 package io.github.iaagofelipe.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +26,9 @@ public class Customer {
     @Column(nullable = false, length = 11)
     private String cpf;
 
-    @Column(name = "date_registration")
-    private LocalDate DateRegistration;
+    @Column(name = "date_registration", updatable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dateRegistration;
 
     @PrePersist
     public void prePersist(){
