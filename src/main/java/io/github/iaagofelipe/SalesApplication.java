@@ -1,11 +1,13 @@
 package io.github.iaagofelipe;
 
-import io.github.iaagofelipe.repository.CustomerRepository;
+import io.github.iaagofelipe.model.entity.Customer;
+import io.github.iaagofelipe.model.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,15 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SalesApplication {
 
-    @Autowired
-    @Qualifier("applicationName")
-    public String applicationName;
-
-    @GetMapping("/hello")
-    public String helloWorld() {
-        return "hello world";
+    @Bean
+    public CommandLineRunner run(@Autowired CustomerRepository repository) {
+        return args -> {
+            Customer customer = Customer.builder().cpf("0000000000").name("Fulano").build();
+            repository.save(customer);
+        };
     }
-
 
     public static void main(String[] args) {
         SpringApplication.run(SalesApplication.class, args);
